@@ -15,7 +15,7 @@ pipeline {
                 archiveArtifacts "output/*/*.deb"
 
                 // Copies the new debs to the stash of existing debs,
-                sh "BRANCH_NAME=master make SUPPLY_DIR=output PROJECT=hoertech-aptsource"
+                sh "BRANCH_NAME=master make SUPPLY_DIR=output/ PROJECT=hoertech-aptsource"
 
                 build job:         "/hoertech-aptly/master",
                       quietPeriod: 300,
