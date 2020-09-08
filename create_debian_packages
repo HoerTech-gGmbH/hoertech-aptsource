@@ -1,0 +1,28 @@
+#!/bin/bash -ex
+VERSION=$(cat version)
+cd $(dirname $0)
+for filetype in .conffiles .control .csv .dep .
+do if [ ${filetype} = . ]
+   then targettype=
+   else targettype=${filetype}
+   fi
+   for PACKAGEBASE in apt.hoertech aptdev.hoertech
+   do for ARCH in amd64 armhf
+      do for SYSTEM in xenial bionic focal
+         do export PACKAGEBASE ARCH SYSTEM
+            mkdir -p output/${SYSTEM}/${ARCH}
+            if test -f ${PACKAGEBASE}${targettype}
+            then cp ${PACKAGEBASE}${targettype} output/${SYSTEM}/${ARCH}/
+            else envsubst <template${filetype} \
+                          >output/${SYSTEM}/${ARCH}/${PACKAGEBASE}${targettype}
+            fi
+            if [ -z "$targettype" ]
+            then pushd output/${SYSTEM}/${ARCH}/
+                 bash -x /usr/bin/mhamakedeb ${PACKAGEBASE}.csv ${VERSION} ${ARCH}
+                 mv *.deb ..
+                 popd
+            fi
+         done
+      done
+   done
+done

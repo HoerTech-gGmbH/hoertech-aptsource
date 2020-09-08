@@ -1,0 +1,2 @@
+${PACKAGEBASE},/etc/apt/sources.list.d
+../../../README.md,/usr/share/doc/${PACKAGEBASE}

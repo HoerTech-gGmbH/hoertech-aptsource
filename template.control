@@ -1,0 +1,4 @@
+Section: admin
+Maintainer: openMHA packaging team <packaging@openmha.org>
+Description: apt sources entry for http://${PACKAGEBASE}.de
+  apt sources entry for apt repository at http://${PACKAGEBASE}.de

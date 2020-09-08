@@ -1,0 +1,1 @@
+deb [arch=${ARCH}] http://${PACKAGEBASE}.de ${SYSTEM} universe
