@@ -1,24 +1,20 @@
 #!/bin/bash -ex
 VERSION=$(cat version)
 cd $(dirname $0)
-for filetype in .conffiles .control .csv .dep .
-do if [ ${filetype} = . ]
-   then targettype=
-   else targettype=${filetype}
-   fi
-   for PACKAGEBASE in apt.hoertech aptdev.hoertech
+for filetype in .conffiles .control .csv .dep .list
+do for PACKAGEBASE in apt.hoertech aptdev.hoertech
    do for ARCH in amd64 armhf
       do for RELEASE in xenial-16.04 bionic-18.04 focal-20.04
          do SYSTEM=${RELEASE%-*}  # codename
             RELEASE=${RELEASE#*-} # numeric release
             export PACKAGEBASE ARCH SYSTEM
             mkdir -p output/${SYSTEM}/${ARCH}
-            if test -f ${PACKAGEBASE}${targettype}
-            then cp ${PACKAGEBASE}${targettype} output/${SYSTEM}/${ARCH}/
+            if test -f ${PACKAGEBASE}${filetype}
+            then cp ${PACKAGEBASE}${filetype} output/${SYSTEM}/${ARCH}/
             else envsubst <template${filetype} \
-                          >output/${SYSTEM}/${ARCH}/${PACKAGEBASE}${targettype}
+                          >output/${SYSTEM}/${ARCH}/${PACKAGEBASE}${filetype}
             fi
-            if [ -z "$targettype" ]
+            if [ "$filetype" = .list ]
             then pushd output/${SYSTEM}/${ARCH}/
                  bash -x /usr/bin/mhamakedeb ${PACKAGEBASE}.csv ${VERSION}-${RELEASE} ${ARCH}
                  mv *.deb ..

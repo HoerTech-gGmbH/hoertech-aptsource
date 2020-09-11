@@ -1,1 +1,1 @@
-/etc/apt/sources.list.d/${PACKAGEBASE}
+/etc/apt/sources.list.d/${PACKAGEBASE}.list
